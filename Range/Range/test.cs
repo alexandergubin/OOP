@@ -5,14 +5,13 @@ namespace Range
     {
         public static void Main(string[] args)
         {
-            Range range1 = new Range(-4.0, 0.0);
+            Range range1 = new Range(-4.0, 4.0);
             Range range2 = new Range(-1.0, 2.0);
-
 
             Range newRange = range1.GetIntersection(range2);
             if (newRange != null)
             {
-                Console.Write("Интервал пересечения: \n");
+                Console.Write("Интервал пересечения: " + Environment.NewLine);
                 newRange.Print();
             }
 
@@ -23,15 +22,12 @@ namespace Range
                 Console.WriteLine(newRange.IsInside(point));
             }
 
-            Range[] diffRanges;
-            diffRanges = range1.GetDifference(range2);
-            Console.Write("Разность интервалов: \n");
+            Range[] diffRanges = range1.GetDifference(range2);
+            Console.Write("Разность интервалов: " + Environment.NewLine);
             Range.Print(diffRanges);
 
-
-            Range[] sumRanges;
-            sumRanges = range1.Union(range2);
-            Console.Write("Обьединение интервалов: \n");
+            Range[] sumRanges = range1.Union(range2);
+            Console.Write("Обьединение интервалов: " + Environment.NewLine);
             Range.Print(sumRanges);
 
             Console.ReadKey();
