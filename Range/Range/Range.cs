@@ -2,80 +2,48 @@
 
 namespace Range
 {
-    class Range
+    class Range : ICloneable
     {
-        private double from;
-        private double to;
 
-        public double From
-        {
-            get
-            {
-                return from;
-            }
-            set
-            {
-                from = value;
-            }
-        }
-
-        public double To
-        {
-            get
-            {
-                return to;
-            }
-            set
-            {
-                to = value;
-            }
-        }
+        public double From { get; set; }
+        public double To { get; set; }
 
         public Range(double from, double to)
         {
-            if (to > from)
-            {
-                this.From = from;
-                this.to = to;
-            }
-            else
-            {
-                this.From = to;
-                this.to = from;
-            }
+            this.From = from;
+            this.To = to;
         }
 
-        public double GetLength
+        public double Length
         {
             get
             {
-                return to - From;
+                return To - From;
             }
         }
 
         public bool IsInside(double input)
         {
-            double epsilon = 1e-10;
-            return (input - From >= -epsilon) && (to - input >= -epsilon);
+            return (input >= From) && (input <= To);
         }
 
         public Range GetIntersection(Range range2)
         {
-            if ((from > range2.to) || (to < range2.From))
+            if ((From >= range2.To) || (To <= range2.From))
             {
                 return null;
             }
             else
             {
-                double tmpFrom = from;
-                double tmpTo = to;
-                if (from < range2.From)
+                double tmpFrom = From;
+                double tmpTo = To;
+                if (From < range2.From)
                 {
                     tmpFrom = range2.From;
                 }
-                if (to > range2.to)
+                if (To > range2.To)
                 {
-                    tmpTo = range2.to;
+                    tmpTo = range2.To;
                 }
                 return new Range(tmpFrom, tmpTo);
             }
@@ -83,48 +51,48 @@ namespace Range
 
         public Range[] GetDifference(Range range2)
         {
-            if ((from > range2.to) || (to < range2.From))
+            if ((From >= range2.To) || (To <= range2.From))
             {
-                return new Range[] { this };
+                return new Range[] { (Range)this.Clone() };
             }
             else
             {
                 double f2 = range2.From;
                 double t2 = range2.To;
-                if ((from < f2) && ((to > f2) && (to <= t2)))
+                if ((From < f2) && ((To > f2) && (To <= t2)))
                 {
-                    return new Range[] { new Range(from, f2) };
+                    return new Range[] { new Range(From, f2) };
                 }
-                else if ((f2 <= from) && ((t2 >= from) && (t2 <= to)))
+                else if ((f2 <= From) && ((t2 > From) && (t2 < To)))
                 {
-                    return new Range[] { new Range(t2, to) };
+                    return new Range[] { new Range(t2, To) };
                 }
-                else if ((from < f2) && (to > t2))
+                else if ((From < f2) && (To > t2))
                 {
-                    return new Range[] { new Range(from, f2), new Range(t2, to) };
+                    return new Range[] { new Range(From, f2), new Range(t2, To) };
                 }
-                return null;
+                return new Range[] { };
             }
 
         }
 
-        public Range[] Add(Range range2)
+        public Range[] Union(Range range2)
         {
-            if ((from > range2.to) || (to < range2.From))
+            if ((From > range2.To) || (To < range2.From))
             {
-                return new Range[] { this, range2 };
+                return new Range[] { (Range)this.Clone(), (Range)range2.Clone() };
             }
             else
             {
                 double tmpFrom = range2.From;
-                double tmpTo = range2.to;
-                if (from < range2.From)
+                double tmpTo = range2.To;
+                if (From < range2.From)
                 {
-                    tmpFrom = from;
+                    tmpFrom = From;
                 }
-                if (to > range2.to)
+                if (To > range2.To)
                 {
-                    tmpTo = to;
+                    tmpTo = To;
                 }
                 return new Range[] { new Range(tmpFrom, tmpTo) };
             }
@@ -132,7 +100,7 @@ namespace Range
 
         public void Print()
         {
-            Console.WriteLine("({0:f}; {1:f})", from, to);
+            Console.WriteLine("({0:f}; {1:f})", From, To);
         }
 
         public static void Print(Range[] array)
@@ -141,6 +109,11 @@ namespace Range
             {
                 Console.WriteLine("({0:f}; {1:f})", range.From, range.To);
             }
+        }
+
+        public object Clone()
+        {
+            return new Range(this.From, this.To);
         }
     }
 

@@ -5,7 +5,7 @@ namespace Range
     {
         public static void Main(string[] args)
         {
-            Range range1 = new Range(-4.0, 0);
+            Range range1 = new Range(-4.0,-1.0);
             Range range2 = new Range(-1.0, 2.0);
 
             Console.Write("Интервал пересечения: ");
@@ -29,7 +29,7 @@ namespace Range
             
 
             Range[] sumRanges;
-            sumRanges = range1.Add(range2);
+            sumRanges = range1.Union(range2);
             Console.Write("Обьединение интервалов: \n");
             Range.Print(sumRanges);
 
