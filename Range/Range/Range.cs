@@ -84,17 +84,9 @@ namespace Range
             }
             else
             {
-                double tmpFrom = range2.From;
-                double tmpTo = range2.To;
-                if (From < range2.From)
-                {
-                    tmpFrom = From;
-                }
-                if (To > range2.To)
-                {
-                    tmpTo = To;
-                }
-                return new Range[] { new Range(tmpFrom, tmpTo) };
+                double minFrom = Math.Min(range2.From, From);
+                double maxTo = Math.Max(range2.To, To);
+                return new Range[] { new Range(minFrom, maxTo) };
             }
         }
 
