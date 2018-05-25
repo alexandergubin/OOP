@@ -16,6 +16,10 @@ namespace Vector
 
         public Vector(int n)
         {
+            if (n <= 0)
+            {
+                throw new ArgumentException("components.Length must be > 0");
+            }
             components = new double[n];
         }
 
