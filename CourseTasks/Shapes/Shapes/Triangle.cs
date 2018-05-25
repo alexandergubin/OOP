@@ -28,16 +28,18 @@ namespace Shapes
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, obj)) { return true; }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
             if (ReferenceEquals(obj, null) || (this.GetType() != obj.GetType()))
             {
                 return false;
             }
             Triangle r = (Triangle)obj;
-            double epsilon = 1e-15;
-            return Math.Abs(GetSideLength(x1, y1, x2, y2) - GetSideLength(r.x1, r.y1, r.x2, r.y2)) < epsilon &&
-                    Math.Abs(GetSideLength(x1, y1, x3, y3) - GetSideLength(r.x1, r.y1, r.x3, r.y3)) < epsilon &&
-                     Math.Abs(GetSideLength(x3, y3, x2, y2) - GetSideLength(r.x3, r.y3, r.x2, r.y2)) < epsilon;
+            return GetSideLength(x1, y1, x2, y2) < GetSideLength(r.x1, r.y1, r.x2, r.y2) &&
+                    GetSideLength(x1, y1, x3, y3) < GetSideLength(r.x1, r.y1, r.x3, r.y3) &&
+                     GetSideLength(x3, y3, x2, y2) < GetSideLength(r.x3, r.y3, r.x2, r.y2);
         }
 
         public override int GetHashCode()

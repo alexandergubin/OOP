@@ -10,15 +10,7 @@ namespace Shapes
     {
         public int Compare(IShape x, IShape y)
         {
-            if (x.GetPerimeter() > y.GetPerimeter())
-            {
-                return 1;
-            }
-            else if (x.GetPerimeter() < y.GetPerimeter())
-            {
-                return -1;
-            }
-            return 0;
+            return x.GetPerimeter().CompareTo(y.GetPerimeter());
         }
     }
 }

@@ -111,7 +111,10 @@ namespace Vector
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, obj)) { return true; }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
             if ((ReferenceEquals(obj, null)) || (obj.GetType() != this.GetType()))
             {
                 return false;
@@ -137,11 +140,11 @@ namespace Vector
         public override int GetHashCode()
         {
             int prime = 37;
-            int hashCode = 1;
-            hashCode = hashCode * prime + (components != null ? components.GetHashCode() : 0);
-            hashCode = hashCode * prime + Size.GetHashCode();
-            hashCode = hashCode * prime + Length.GetHashCode();
-            return hashCode;
+            int hash = 1;
+            hash = hash * prime + (ReferenceEquals(components, null) ? components.GetHashCode() : 0);
+            hash = hash * prime + Size.GetHashCode();
+            hash = hash * prime + Length.GetHashCode();
+            return hash;
         }
 
         // STATIC METHODS
