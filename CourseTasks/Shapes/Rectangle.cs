@@ -1,14 +1,14 @@
 ﻿namespace Shapes
 {
-    class Square : IShape
+    class Rectangle : IShape
     {
         private double heigh;
         private double width;
 
-        public Square(double side)
+        public Rectangle(double heigh, double width)
         {
-            heigh = side;
-            width = side;
+            this.heigh = heigh;
+            this.width = width;
         }
 
         public override bool Equals(object obj)
@@ -18,8 +18,8 @@
             {
                 return false;
             }
-            Square square = (Square)obj;
-            return (this.heigh == square.heigh);
+            Rectangle r = (Rectangle)obj;
+            return (this.heigh == r.heigh) && (this.width == r.width);
         }
 
         public override int GetHashCode()
@@ -33,7 +33,7 @@
 
         public override string ToString()
         {
-            return string.Format("Square with side = {0:f}", heigh);
+            return string.Format("Rectangle with heigh = {0:f}, width = {1:f} ", heigh, width);
         }
 
         public double GetArea()

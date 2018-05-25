@@ -1,14 +1,15 @@
-﻿namespace Shapes
-{
-    class Square : IShape
-    {
-        private double heigh;
-        private double width;
+﻿using System;
+using System.Reflection;
 
-        public Square(double side)
+namespace Shapes
+{
+    class Circle : IShape
+    {
+        private double radius;
+
+        public Circle(double radius)
         {
-            heigh = side;
-            width = side;
+            this.radius = radius;
         }
 
         public override bool Equals(object obj)
@@ -18,42 +19,40 @@
             {
                 return false;
             }
-            Square square = (Square)obj;
-            return (this.heigh == square.heigh);
+            Circle c = (Circle)obj;
+            return this.radius == c.radius;
         }
 
         public override int GetHashCode()
         {
             int prime = 37;
             int hash = 1;
-            hash = prime * hash + heigh.GetHashCode();
-            hash = prime * hash + width.GetHashCode();
-            return hash;
+            return hash = prime * hash + radius.GetHashCode();
         }
 
         public override string ToString()
         {
-            return string.Format("Square with side = {0:f}", heigh);
+            return string.Format("Circle with radius = {0:f}", radius);
         }
 
         public double GetArea()
         {
-            return heigh * width;
+            return Math.PI * radius * radius;
         }
 
         public double GetHeight()
         {
-            return heigh;
+            return 2 * radius;
         }
 
         public double GetPerimeter()
         {
-            return 2 * (heigh + width);
+            return 2 * Math.PI * radius;
         }
 
         public double GetWidth()
         {
-            return width;
+            return 2 * radius;
         }
     }
 }
