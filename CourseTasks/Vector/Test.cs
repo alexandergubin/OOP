@@ -34,7 +34,7 @@ namespace Vector
             Console.WriteLine("vector2 = " + vector2.ToString());
 
             vector1 = Vector.Sub(new Vector(array3), vector2);
-            Console.WriteLine("vector1 = Vector.Add({1.0}, vector2) = " + vector1.ToString());
+            Console.WriteLine("vector1 = Vector.Sub({1.0}, vector2) = " + vector1.ToString());
 
             double composition = Vector.ScalarMultiply(vector1, vector2);
             Console.WriteLine("Vector.ScalarMultiply(vector1, vector2) = " + composition);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Vector
 {
@@ -54,12 +55,12 @@ namespace Vector
                 throw new ArgumentException("размерность вектора не может быть меньше длинны передаваемого массива");
             }
             components = new double[n];
-            Array.Copy(array, components, (n < array.Length) ? n : array.Length);
+            Array.Copy(array, components, Math.Min(n, array.Length));
         }
 
         public override string ToString()
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder("{");
+            StringBuilder sb = new StringBuilder("{");
             for (int i = 0; i < components.Length; i++)
             {
                 sb.AppendFormat(" {0:f}", components[i]);
@@ -76,16 +77,11 @@ namespace Vector
         {
             if (Size < other.Size)
             {
-                double[] newComponents = new double[other.Size];
-                Array.Copy(components, newComponents, components.Length);
-                components = newComponents;
+                Array.Resize(ref components, other.Size);
             }
-            for (int i = 0; i < components.Length; i++)
+            for (int i = 0; i < components.Length && i < other.components.Length; i++)
             {
-                if (i < other.components.Length)
-                {
                     components[i] += other.components[i];
-                }
             }
         }
 
@@ -93,16 +89,11 @@ namespace Vector
         {
             if (Size < other.Size)
             {
-                double[] newComponents = new double[other.Size];
-                Array.Copy(components, newComponents, components.Length);
-                components = newComponents;
+                Array.Resize(ref components, other.Size);
             }
-            for (int i = 0; i < components.Length; i++)
+            for (int i = 0; i < components.Length && i < other.components.Length; i++)
             {
-                if (i < other.components.Length)
-                {
                     components[i] -= other.components[i];
-                }
             }
         }
 
@@ -182,7 +173,6 @@ namespace Vector
                 }
             }
             hash = hash * prime + Size.GetHashCode();
-            hash = hash * prime + Length.GetHashCode();
             return hash;
         }
 
