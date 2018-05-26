@@ -79,7 +79,8 @@ namespace Vector
             {
                 Array.Resize(ref components, other.Size);
             }
-            for (int i = 0; i < components.Length && i < other.components.Length; i++)
+            int minLength = Math.Min(components.Length, other.components.Length);
+            for (int i = 0; i < minLength; i++)
             {
                     components[i] += other.components[i];
             }
@@ -91,7 +92,8 @@ namespace Vector
             {
                 Array.Resize(ref components, other.Size);
             }
-            for (int i = 0; i < components.Length && i < other.components.Length; i++)
+            int minLength = Math.Min(components.Length, other.components.Length);
+            for (int i = 0; i < minLength; i++)
             {
                     components[i] -= other.components[i];
             }
