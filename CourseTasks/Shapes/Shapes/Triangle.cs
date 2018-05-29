@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shapes
+namespace ShapesPackage
 {
     class Triangle : IShape
     {

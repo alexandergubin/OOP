@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace Vector
+namespace VectorPackage
 {
-    class Vector
+    public class Vector
     {
         private double[] components;
 
@@ -79,8 +79,7 @@ namespace Vector
             {
                 Array.Resize(ref components, other.Size);
             }
-            int minLength = Math.Min(components.Length, other.components.Length);
-            for (int i = 0; i < minLength; i++)
+            for (int i = 0; i < other.Size; i++)
             {
                     components[i] += other.components[i];
             }
@@ -92,8 +91,7 @@ namespace Vector
             {
                 Array.Resize(ref components, other.Size);
             }
-            int minLength = Math.Min(components.Length, other.components.Length);
-            for (int i = 0; i < minLength; i++)
+            for (int i = 0; i < other.Size; i++)
             {
                     components[i] -= other.components[i];
             }

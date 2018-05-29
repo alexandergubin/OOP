@@ -1,4 +1,4 @@
-﻿namespace Shapes
+﻿namespace ShapesPackage
 {
     public interface IShape
     {
