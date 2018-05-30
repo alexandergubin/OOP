@@ -129,7 +129,6 @@ namespace MatrixPackage
             return result;
         }
 
-
         public Matrix Transpose()
         {
             if (Rows != Columns)
@@ -222,7 +221,6 @@ namespace MatrixPackage
             sb.Append("}");
             return sb.ToString();
         }
-
 
         public Matrix Add(Matrix other)
         {
