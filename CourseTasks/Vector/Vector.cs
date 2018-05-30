@@ -202,5 +202,10 @@ namespace VectorPackage
             }
             return result;
         }
+
+        public Vector Clone()
+        {
+            return (Vector)MemberwiseClone();
+        }
     }
 }

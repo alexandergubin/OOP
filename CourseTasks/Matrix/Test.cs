@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using VectorPackage;
 
 namespace MatrixPackage
 {
@@ -14,9 +14,9 @@ namespace MatrixPackage
             });
 
             Matrix matrix2 = new Matrix(new double[,]{
-                {1.0, -2.0},
-                {4.0, 0.0},
-                {-7.0, 8.0}
+                {1.0, -2.0, 0},
+                {4.0, 0.0, 0},
+                {-7.0, 8.0, 0}
             });
 
             Matrix matrix3 = new Matrix(new double[,]{
@@ -24,6 +24,11 @@ namespace MatrixPackage
                 {0.0, 1.0, 0.0},
                 {1.0, 0.0, 0.0}
             });
+
+            Vector vector = new Vector(new double[] { 5.0, 5.0, 5.0 });
+
+            Console.WriteLine(matrix3.SetRow(0, vector));
+            Console.WriteLine();
 
             Console.WriteLine("matrix1.GetDeterminant()");
             Console.WriteLine(matrix1.GetDeterminant());
@@ -38,8 +43,8 @@ namespace MatrixPackage
             Console.WriteLine();
 
             Console.WriteLine("умножение матриц matrix1 и matrix3:");
-            Matrix result = new Matrix(3, 3);
-            Matrix.Multiply(result, matrix1, matrix3);
+            Matrix result = Matrix.Multiply(matrix1, matrix3);
+
             Console.WriteLine(result.ToString());
 
             Console.ReadKey();
