@@ -30,6 +30,9 @@ namespace MatrixPackage
             Console.WriteLine(matrix3.SetRow(0, vector));
             Console.WriteLine();
 
+            Console.WriteLine(matrix1.Transpose().ToString());
+            Console.WriteLine();
+
             Console.WriteLine("matrix1.GetDeterminant()");
             Console.WriteLine(matrix1.GetDeterminant());
             Console.WriteLine();

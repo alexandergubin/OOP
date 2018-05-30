@@ -14,6 +14,7 @@ namespace MatrixPackage
             {
                 throw new ArgumentException("размер матрицы должен быть больше 0");
             }
+
             vectors = new Vector[n];
             for (int i = 0; i < n; i++)
             {
@@ -25,8 +26,9 @@ namespace MatrixPackage
         {
             if (ReferenceEquals(matrix, null))
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("невозможно создать матрицу, параметр конструктора не должен быть равен null");
             }
+
             vectors = new Vector[matrix.vectors.Length];
             for (int i = 0; i < matrix.vectors.Length; ++i)
             {
@@ -38,12 +40,13 @@ namespace MatrixPackage
         {
             if (ReferenceEquals(array, null))
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("массив не определен (null)");
             }
-            if ((array.GetLength(0) == 0) || (array.GetLength(0) == 0))
+            if ((array.GetLength(0) == 0) || (array.GetLength(1) == 0))
             {
                 throw new ArgumentException("размер матрицы должен быть больше 0");
             }
+
             vectors = new Vector[array.GetLength(0)];
             for (int i = 0; i < array.GetLength(0); ++i)
             {
@@ -59,8 +62,9 @@ namespace MatrixPackage
         {
             if (ReferenceEquals(array, null))
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("входной массив не определен(null)");
             }
+
             int maxLength = 0;
             foreach (Vector e in array)
             {
@@ -69,6 +73,11 @@ namespace MatrixPackage
                     maxLength = e.Size;
                 }
             }
+            if (maxLength == 0)
+            {
+                throw new ArgumentException("размер матрицы должен быть больше 0");
+            }
+
             vectors = new Vector[array.Length];
             for (int i = 0; i < array.Length; i++)
             {
@@ -95,7 +104,7 @@ namespace MatrixPackage
 
         public Vector GetRow(int index)
         {
-            if ((index < 0) || (index > Columns - 1))
+            if ((index < 0) || (index >= Columns))
             {
                 throw new ArgumentException("некорректный индекс в GetRow(int index)");
             }
@@ -104,11 +113,20 @@ namespace MatrixPackage
 
         public Matrix SetRow(int rowIndex, Vector vector)
         {
+            if (ReferenceEquals(vector, null))
+            {
+                throw new ArgumentNullException("вектор для задания строки не определен(null)");
+            }
             if (Columns != vector.Size)
             {
                 throw new ArgumentException("длина вектора не равно количеству столбцов матрицы");
             }
-            for (int i = 0; i < Columns; i++)
+            if (rowIndex < 0 || rowIndex >= Rows)
+            {
+                throw new ArgumentException("значение индекса строки некорректно");
+            }
+
+            for (int i = 0; i < vector.Size; i++)
             {
                 vectors[rowIndex].SetComponent(i, vector.GetComponent(i));
             }
@@ -117,12 +135,13 @@ namespace MatrixPackage
 
         public Vector GetColumn(int index)
         {
-            if ((index < 0) || (index > Rows - 1))
+            if ((index < 0) || (index >= Columns))
             {
-                throw new ArgumentException("некорректный индекс в GetColumn(int index)");
+                throw new ArgumentException("некорректное значение индекса");
             }
-            Vector result = new Vector(vectors.Length);
-            for (int i = 0; i < vectors.Length; i++)
+
+            Vector result = new Vector(Rows);
+            for (int i = 0; i < Rows; i++)
             {
                 result.SetComponent(i, vectors[i].GetComponent(index));
             }
@@ -131,19 +150,12 @@ namespace MatrixPackage
 
         public Matrix Transpose()
         {
-            if (Rows != Columns)
+            Vector[] array = new Vector[Columns];
+            for (int i = 0; i < Columns; i++)
             {
-                throw new ArgumentException("матрица не квадратная");
+                array[i] = new Vector(GetColumn(i));
             }
-            for (int i = 0; i < Rows; i++)
-            {
-                for (int j = 0; j < i; j++)
-                {
-                    double tmp = vectors[i].GetComponent(j);
-                    vectors[i].SetComponent(j, vectors[j].GetComponent(i));
-                    vectors[j].SetComponent(i, tmp);
-                }
-            }
+            vectors = array;
             return this;
         }
 
@@ -172,10 +184,11 @@ namespace MatrixPackage
             {
                 throw new ArgumentException("матрица не квадратная");
             }
+
             return CalculateDeterminant(this);
         }
 
-        private double CalculateDeterminant(Matrix minor)
+        private static double CalculateDeterminant(Matrix minor)
         {
             double determinant = 0;
             if (minor.Rows == 1)
@@ -201,7 +214,7 @@ namespace MatrixPackage
                             }
                         }
                     }
-                    determinant += Math.Pow((double)-1, (k + 2)) * CalculateDeterminant(tmpMinor) * minor.GetValue(0, k);
+                    determinant += Math.Pow(-1.0, (k + 2)) * CalculateDeterminant(tmpMinor) * minor.GetValue(0, k);
                 }
             }
             return determinant;
@@ -228,6 +241,7 @@ namespace MatrixPackage
             {
                 throw new ArgumentException("размеры матриц не совпадают");
             }
+
             for (int i = 0; i < Rows; i++)
             {
                 vectors[i].Add(other.vectors[i]);
@@ -241,6 +255,7 @@ namespace MatrixPackage
             {
                 throw new ArgumentException("размеры матриц не совпадают");
             }
+
             for (int i = 0; i < Rows; i++)
             {
                 vectors[i].Sub(other.vectors[i]);
@@ -248,40 +263,60 @@ namespace MatrixPackage
             return this;
         }
 
-        public Matrix MultiplyOnVector(Vector vector)
+        public Vector MultiplyOnVector(Vector vector)
         {
-            if (vector.Size != Rows)
+            if (ReferenceEquals(vector, null))
             {
-                throw new ArgumentException("количество элементов вектора должно быть равно количество строк матрицы");
+                throw new ArgumentNullException("Вектор не определен (null)");
             }
-            Matrix result = new Matrix(this);
+            if (vector.Size != Columns)
+            {
+                throw new ArgumentException("количество элементов вектора должно быть равно количество столбцов матрицы");
+            }
+
+            Vector result = new Vector(Rows);
             for (int i = 0; i < Rows; i++)
             {
+                double sum = 0.0;
                 for (int j = 0; j < Columns; j++)
                 {
-                    SetValue(i, j, GetValue(i, j) * vector.GetComponent(i));
+                    sum += GetValue(i, j) * vector.GetComponent(j);
                 }
+                result.SetComponent(i, sum);
             }
             return result;
         }
         //        STATIC METHODS
 
-        public static void Add(Matrix matrix1, Matrix matrix2)
+        public static Matrix Add(Matrix matrix1, Matrix matrix2)
         {
-            matrix1.Add(matrix2);
+            if (ReferenceEquals(matrix1, null) || ReferenceEquals(matrix2, null))
+            {
+                throw new ArgumentNullException("Матрица не определена (null)");
+            }
+
+            Matrix result = new Matrix(matrix1);
+            return result.Add(matrix2);
         }
 
-        public static void Sub(Matrix matrix1, Matrix matrix2)
+        public static Matrix Sub(Matrix matrix1, Matrix matrix2)
         {
-            matrix1.Sub(matrix2);
+            if (ReferenceEquals(matrix1, null) || ReferenceEquals(matrix2, null))
+            {
+                throw new ArgumentNullException("Матрица не определена (null)");
+            }
+
+            Matrix result = new Matrix(matrix1);
+            return result.Sub(matrix2);
         }
 
         public static Matrix Multiply(Matrix matrix1, Matrix matrix2)
         {
-            if (matrix1.Rows != matrix2.Rows || matrix1.Columns != matrix2.Columns)
+            if (ReferenceEquals(matrix1, null) || ReferenceEquals(matrix2, null))
             {
-                throw new ArgumentException("матрицы разного размера");
+                throw new ArgumentNullException("Матрица не определена (null)");
             }
+
             Matrix result = new Matrix(matrix1.Rows, matrix1.Columns);
             for (int i = 0; i < matrix1.Rows; i++)
             {
