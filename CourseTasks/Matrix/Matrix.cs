@@ -28,6 +28,10 @@ namespace MatrixPackage
             {
                 throw new ArgumentNullException("невозможно создать матрицу, параметр конструктора не должен быть равен null");
             }
+            if (matrix.Rows == 0 || matrix.Columns == 0)
+            {
+                throw new ArgumentException("размер матрицы должен быть больше 0");
+            }
 
             vectors = new Vector[matrix.vectors.Length];
             for (int i = 0; i < matrix.vectors.Length; ++i)
@@ -104,7 +108,7 @@ namespace MatrixPackage
 
         public Vector GetRow(int index)
         {
-            if ((index < 0) || (index >= Columns))
+            if ((index < 0) || (index >= Rows))
             {
                 throw new ArgumentException("некорректный индекс в GetRow(int index)");
             }
@@ -119,7 +123,7 @@ namespace MatrixPackage
             }
             if (Columns != vector.Size)
             {
-                throw new ArgumentException("длина вектора не равно количеству столбцов матрицы");
+                throw new ArgumentException("длина вектора не равна количеству столбцов матрицы");
             }
             if (rowIndex < 0 || rowIndex >= Rows)
             {
@@ -286,7 +290,6 @@ namespace MatrixPackage
             }
             return result;
         }
-        //        STATIC METHODS
 
         public static Matrix Add(Matrix matrix1, Matrix matrix2)
         {

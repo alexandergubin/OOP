@@ -27,6 +27,11 @@ namespace MatrixPackage
 
             Vector vector = new Vector(new double[] { 5.0, 5.0, 5.0 });
 
+            Console.WriteLine("matrix3.MultiplyOnVector(vector)");
+            Console.WriteLine(matrix3.MultiplyOnVector(vector).ToString());
+            Console.WriteLine();
+
+            Console.WriteLine("matrix3.SetRow(0, vector)");
             Console.WriteLine(matrix3.SetRow(0, vector));
             Console.WriteLine();
 
